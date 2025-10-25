@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
 import { FaEnvelope, FaUser, FaLock } from "react-icons/fa";
@@ -7,10 +7,20 @@ import Toast from "../../components/Toast";
 import bg from "../../assets/Auth/_DSC4799.jpg";
 
 const LoginPage = () => {
-  const { login } = useContext(UserContext);
+  const { login, logout } = useContext(UserContext);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: "", password: "" });
+  const [rememberMe, setRememberMe] = useState(false);
   const [toast, setToast] = useState(null);
+
+  // Prefill email if remembered
+  useEffect(() => {
+    const rememberedEmail = localStorage.getItem('rememberedEmail');
+    if (rememberedEmail) {
+      setFormData(prev => ({ ...prev, email: rememberedEmail }));
+      setRememberMe(true);
+    }
+  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -20,6 +30,12 @@ const LoginPage = () => {
     e.preventDefault();
     const result = await login(formData.email, formData.password);
     if (result.success) {
+      // Handle Remember Me
+      if (rememberMe) {
+        localStorage.setItem('rememberedEmail', formData.email);
+      } else {
+        localStorage.removeItem('rememberedEmail');
+      }
       setToast({ message: "Login successful! Redirecting...", type: "success" });
       setTimeout(() => {
         navigate("/");
@@ -75,12 +91,19 @@ const LoginPage = () => {
             />
           </div>
 
-          {/* Forgot Password */}
-          {/* <div className="flex justify-end mb-6">
-          <button className="text-white/80 text-xs underline hover:text-white transition">
-            Forgot Password?
-          </button>
-        </div> */}
+          {/* Remember Me */}
+          <div className="flex items-center mb-6">
+            <input
+              type="checkbox"
+              id="rememberMe"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+              className="mr-2"
+            />
+            <label htmlFor="rememberMe" className="text-white/80 text-sm">
+              Remember Me
+            </label>
+          </div>
 
           {/* Login Button */}
           <button className="w-full bg-gradient-to-r from-[#0d80f2] to-[#0c70d2] hover:from-[#0c70d2] hover:to-[#095bb3] text-white font-semibold py-3 px-4 rounded-xl shadow-lg transition duration-300 text-sm">

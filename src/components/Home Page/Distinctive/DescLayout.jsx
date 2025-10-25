@@ -23,7 +23,7 @@ const DescLayout = ({ desc }) => {
 
   return (
     <div className="w-full flex flex-col-reverse md:flex-row items-center">
-      <div className="md:w-[55%] w-full p-4 flex flex-col items-center justify-center gap-4">
+      <div className="md:w-[45%] w-full p-4 flex flex-col items-center justify-center gap-4">
         <FullLogo isFlex={false} />
         <p className="text-center w-full p-2 text-sm leading-6.5 text-gray-500">
           {desc.desc}
@@ -32,7 +32,7 @@ const DescLayout = ({ desc }) => {
           Know More
         </button>
       </div>
-      <div className="w-full md:w-[45%] h-[65vh]">
+      <div className="w-full md:w-[55%] h-[65vh]">
         <div className="_img flex items-center justify-center h-full">
           {desc.img && desc.img.length > 1 ? (
             <Slider

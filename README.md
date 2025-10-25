@@ -1,6 +1,6 @@
-# Project Updates: Carousel and UI Enhancements
+# Project Updates: Carousel and UI Enhancements, Authentication Improvements
 
-This document outlines the significant changes and improvements made to the project's frontend, primarily focusing on the main image carousel and related UI components.
+This document outlines the significant changes and improvements made to the project's frontend, primarily focusing on the main image carousel and related UI components, as well as recent authentication enhancements.
 
 ## Summary of Work
 
@@ -151,3 +151,33 @@ This section documents critical fixes and updates made to ensure successful depl
 - **Contact Us Map:**
   - **Issue:** The map in the "Contact Us" section was displaying a default location.
   - **Resolution:** Updated the `iframe` `src` in `src/components/Home Page/Contact Us/Contact.jsx` to use a Google Maps embed URL with the specific coordinates provided by the user, ensuring the correct location is displayed.
+
+## Authentication Improvements: Client-Side Caching and Auto Logout Fixes
+
+This section details the recent enhancements made to the authentication system to improve user experience by implementing client-side caching for login credentials and fixing automatic logout issues.
+
+### Changes Made
+
+- **UserContext.jsx Updates**:
+  - Removed the periodic token validation check (every 5 seconds) that was causing unnecessary redirects and potential auto-logouts.
+  - Improved the app mount logic to properly validate tokens by fetching the user profile on load. If the fetch fails (e.g., due to an expired token), the token is cleared, and the user is redirected to the login page.
+  - This ensures that only invalid tokens trigger logout, not temporary network issues or other API errors.
+
+- **LoginPage.jsx Enhancements**:
+  - Added a "Remember Me" checkbox to allow users to opt-in to email caching.
+  - Implemented pre-filling of the email field on page load if a remembered email exists in localStorage.
+  - On successful login, if "Remember Me" is checked, the email is stored in localStorage for future sessions.
+  - On logout, the remembered email is cleared to prevent persistence across different users.
+
+### Benefits
+
+- **Improved User Experience**: Users no longer need to re-enter their email every time they visit the site if they choose "Remember Me".
+- **Reduced Auto-Logouts**: The removal of aggressive periodic checks prevents users from being logged out during normal site usage.
+- **Proper Token Validation**: Tokens are now validated only when necessary (on app load), and invalid tokens are handled gracefully without disrupting the user experience.
+- **Security**: Remembered emails are cleared on logout, and passwords are never stored locally.
+
+### Technical Details
+
+- **Storage**: Uses localStorage for email persistence, ensuring data survives browser sessions but is cleared on logout.
+- **Token Handling**: Axios interceptor continues to handle 401 responses by clearing tokens and redirecting, providing a fallback for API-level authentication failures.
+- **State Management**: The UserContext now properly manages authentication state based on actual token validity rather than presence alone.

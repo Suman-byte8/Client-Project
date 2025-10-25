@@ -14,50 +14,35 @@ const UserProvider = ({ children }) => {
 
   const getToken = () => localStorage.getItem('token');
 
-  // 👇 NEW: Centralized token validation + redirect logic
-  const validateTokenAndRedirect = () => {
-    const token = getToken();
-    const isAuthPage = location.pathname === '/log-in' || location.pathname === '/sign-up';
 
-    if (!token) {
-      setIsAuthenticated(false);
-      setUser(null);
-      if (!isAuthPage) {
-        navigate('/log-in', { replace: true });
-      }
-      return false;
-    }
-    return true;
-  };
 
   // 👇 Run on mount and whenever path changes
   useEffect(() => {
     const token = getToken();
     if (token) {
-      fetchUserDetails();
-      setIsAuthenticated(true);
+      // Fetch user details to validate token
+      fetchUserDetails().then(() => {
+        setIsAuthenticated(true);
+      }).catch(() => {
+        // If fetch fails (e.g., token expired), clear token and redirect
+        localStorage.removeItem('token');
+        setIsAuthenticated(false);
+        setUser(null);
+        if (location.pathname !== '/log-in' && location.pathname !== '/sign-up') {
+          navigate('/log-in', { replace: true });
+        }
+      });
     } else {
-      validateTokenAndRedirect(); // 👈 Uses centralized logic
+      setIsAuthenticated(false);
+      setUser(null);
+      if (location.pathname !== '/log-in' && location.pathname !== '/sign-up') {
+        navigate('/log-in', { replace: true });
+      }
     }
     setLoading(false);
   }, [location.pathname]);
 
-  // 👇 Periodic check every 5 seconds — enhanced with validation function
-  useEffect(() => {
-    const interval = setInterval(() => {
-      validateTokenAndRedirect(); // 👈 Reuses logic
-    }, 5000);
 
-    return () => clearInterval(interval);
-  }, [location.pathname, navigate]);
-
-  // 👇 Optional: Add manual re-validation trigger (exposed to consumers if needed)
-  const revalidateAuth = () => {
-    const hasToken = validateTokenAndRedirect();
-    if (hasToken) {
-      fetchUserDetails(); // Refresh user if token still valid
-    }
-  };
 
   const fetchUserDetails = async () => {
     const result = await getUserProfile();
@@ -105,6 +90,7 @@ const UserProvider = ({ children }) => {
     setUser(null);
     setIsAuthenticated(false);
     localStorage.removeItem('token');
+    localStorage.removeItem('rememberedEmail'); // Clear remembered email on logout
     navigate('/log-in', { replace: true });
   };
 
@@ -122,7 +108,7 @@ const UserProvider = ({ children }) => {
         signup, 
         logout, 
         fetchUserDetails,
-        revalidateAuth // 👈 Expose for manual checks if needed elsewhere
+
       }}
     >
       {children}
