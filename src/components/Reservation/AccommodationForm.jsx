@@ -3,12 +3,16 @@ import { toast } from 'react-hot-toast';
 import FullLogo from "../FullLogo";
 import BookingButton from "../Reservation/BookingButton";
 import { DatePicker } from "../Reservation/Accommodation/components/DatePicker";
+import { NightsDisplay } from "../Reservation/Accommodation/components/NightsDisplay";
 import { RoomSelection } from "../Reservation/Accommodation/components/RoomSelection";
 import { GuestInformation } from "../Reservation/Accommodation/components/GuestInformation";
 import { createReservation } from "../../services/reservationApi";
 import { formatDate } from "../../utils/bookingUtils";
 import {UserContext} from "../../context/UserContext";
 
+// Constants for check-in and check-out times
+const CHECK_IN_TIME = "11:00";
+const CHECK_OUT_TIME = "09:00";
 
 export default function AccommodationForm({ onSubmit }) {
   // State declarations
@@ -80,6 +84,31 @@ const {getToken} = useContext(UserContext)
     setSpecialRequests('');
   };
 
+  // Helper functions for formatting dates with times
+  const formatDateWithTime = (date, time) => {
+    const formattedDate = date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+    return `${formattedDate} at ${time}`;
+  };
+
+  const formatTime = (time) => {
+    const [hours, minutes] = time.split(':');
+    const hour = parseInt(hours, 10);
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+    const displayHour = hour % 12 || 12;
+    return `${displayHour}:${minutes} ${ampm}`;
+  };
+
+  // Calculate number of nights
+  const calculateNights = () => {
+    const diffTime = departureDate.getTime() - arrivalDate.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+  };
+
   const handleSubmit = async () => {
     try {
       setIsLoading(true);
@@ -95,6 +124,9 @@ const {getToken} = useContext(UserContext)
         typeOfReservation: 'accommodation',
         arrivalDate: arrivalDate.toISOString(),
         departureDate: departureDate.toISOString(),
+        checkInTime: CHECK_IN_TIME,
+        checkOutTime: CHECK_OUT_TIME,
+        nights: calculateNights(),
         rooms: rooms,
         totalAdults: getTotalAdults(),
         totalChildren: getTotalChildren(),
@@ -150,7 +182,7 @@ const {getToken} = useContext(UserContext)
           }}
           onDateSelect={(date) => handleDateSelect(date, "arrival")}
           minDate={today}
-          formatDate={formatDate}
+          formatDate={(date) => formatDateWithTime(date, formatTime(CHECK_IN_TIME))}
         />
         <DatePicker
           label="DEPARTURE"
@@ -162,9 +194,11 @@ const {getToken} = useContext(UserContext)
           }}
           onDateSelect={(date) => handleDateSelect(date, "departure")}
           minDate={arrivalDate}
-          formatDate={formatDate}
+          formatDate={(date) => formatDateWithTime(date, formatTime(CHECK_OUT_TIME))}
         />
       </div>
+
+      <NightsDisplay nights={calculateNights()} />
 
       <RoomSelection
         rooms={rooms}

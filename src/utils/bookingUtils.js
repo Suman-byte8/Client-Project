@@ -26,7 +26,7 @@ export const getBookingType = (bookingData) => {
 };
 
 /**
- * UI helper: Format a date string → "February 15, 2025 at 03:45 PM"
+ * UI helper: Format a date string → "February 15, 2025"
  */
 export const formatDate = (dateString) => {
   if (!dateString) return "N/A";
@@ -36,10 +36,39 @@ export const formatDate = (dateString) => {
     month: "long",
     day: "numeric",
   });
-  const formattedTime = date.toLocaleTimeString("en-US", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
+  return formattedDate;
+};
+
+/**
+ * UI helper: Format a date with time → "February 15, 2025 at 03:45 PM"
+ */
+export const formatDateWithTime = (dateString, timeString) => {
+  if (!dateString) return "N/A";
+  const date = new Date(dateString);
+  const formattedDate = date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   });
-  return `${formattedDate} at ${formattedTime}`;
+  if (timeString) {
+    const [hours, minutes] = timeString.split(':');
+    const hour = parseInt(hours, 10);
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+    const displayHour = hour % 12 || 12;
+    const formattedTime = `${displayHour}:${minutes} ${ampm}`;
+    return `${formattedDate} at ${formattedTime}`;
+  }
+  return formattedDate;
+};
+
+/**
+ * UI helper: Format time with AM/PM → "11:00 AM"
+ */
+export const formatTime = (timeString) => {
+  if (!timeString) return "";
+  const [hours, minutes] = timeString.split(':');
+  const hour = parseInt(hours, 10);
+  const ampm = hour >= 12 ? 'PM' : 'AM';
+  const displayHour = hour % 12 || 12;
+  return `${displayHour}:${minutes} ${ampm}`;
 };

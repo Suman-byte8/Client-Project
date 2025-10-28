@@ -1,6 +1,6 @@
 import React from "react";
 import { FaCalendarAlt, FaBed, FaUser, FaBuilding, FaUtensils, FaInfoCircle } from "react-icons/fa";
-import { formatDate } from "../../utils/bookingUtils";
+import { formatDate, formatTime } from "../../utils/bookingUtils";
 
 const AccommodationDetails = ({ booking }) => (
   <div className="font-helvetica-neue text-gray-700">
@@ -8,14 +8,14 @@ const AccommodationDetails = ({ booking }) => (
       <FaCalendarAlt className="text-gray-500" />
       <div>
         <p className="text-sm text-gray-600">Check-in</p>
-        <p className="font-medium">{formatDate(booking.arrivalDate)}</p>
+        <p className="font-medium">{formatDate(booking.arrivalDate)} at {formatTime(booking.checkInTime)}</p>
       </div>
     </div>
     <div className="flex items-center gap-3 mb-2">
       <FaCalendarAlt className="text-gray-500" />
       <div>
         <p className="text-sm text-gray-600">Check-out</p>
-        <p className="font-medium">{formatDate(booking.departureDate)}</p>
+        <p className="font-medium">{formatDate(booking.departureDate)} at {formatTime(booking.checkOutTime)}</p>
       </div>
     </div>
     <div className="flex items-center gap-3 mb-2">
@@ -26,6 +26,13 @@ const AccommodationDetails = ({ booking }) => (
           {booking.rooms.length} Room(s), {booking.totalAdults} Adult(s)
           {booking.totalChildren > 0 && `, ${booking.totalChildren} Children`}
         </p>
+      </div>
+    </div>
+    <div className="flex items-center gap-3 mb-2">
+      <FaCalendarAlt className="text-gray-500" />
+      <div>
+        <p className="text-sm text-gray-600">Number of Nights</p>
+        <p className="font-medium">{booking.nights} Night(s)</p>
       </div>
     </div>
   </div>
