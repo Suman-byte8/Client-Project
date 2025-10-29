@@ -40,15 +40,22 @@ const {getToken} = useContext(UserContext)
     if (type === "arrival") {
       setArrivalDate(date);
       setShowArrivalCalendar(false);
-      if (date >= departureDate) {
+      // If arrival date is changed to be on or after departure, adjust departure
+      const arrivalDateOnly = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+      const departureDateOnly = new Date(departureDate.getFullYear(), departureDate.getMonth(), departureDate.getDate());
+      if (arrivalDateOnly >= departureDateOnly) {
         const newDeparture = new Date(date);
         newDeparture.setDate(date.getDate() + 1);
         setDepartureDate(newDeparture);
       }
     } else {
-      if (date > arrivalDate) {
+      const dateOnly = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+      const arrivalDateOnly = new Date(arrivalDate.getFullYear(), arrivalDate.getMonth(), arrivalDate.getDate());
+      if (dateOnly > arrivalDateOnly) {
         setDepartureDate(date);
         setShowDepartureCalendar(false);
+      } else {
+        toast.error("Departure date must be after the arrival date.");
       }
     }
   };
@@ -193,7 +200,7 @@ const {getToken} = useContext(UserContext)
             setShowArrivalCalendar(false);
           }}
           onDateSelect={(date) => handleDateSelect(date, "departure")}
-          minDate={arrivalDate}
+          minDate={new Date(arrivalDate.getTime() + 24 * 60 * 60 * 1000)}
           formatDate={(date) => formatDateWithTime(date, formatTime(CHECK_OUT_TIME))}
         />
       </div>

@@ -20,13 +20,21 @@ const Calendar = ({ selectedDate, onDateSelect, minDate, maxDate }) => {
 
     const isDateDisabled = (date) => {
       if (!date) return true;
-      
+
       const dateObj = date instanceof Date ? date : new Date(date);
       const minDateObj = minDate ? (minDate instanceof Date ? minDate : new Date(minDate)) : null;
       const maxDateObj = maxDate ? (maxDate instanceof Date ? maxDate : new Date(maxDate)) : null;
-      
-      if (minDateObj && dateObj < minDateObj) return true;
-      if (maxDateObj && dateObj > maxDateObj) return true;
+
+      if (minDateObj) {
+        const minDateOnly = new Date(minDateObj.getFullYear(), minDateObj.getMonth(), minDateObj.getDate());
+        const dateOnly = new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate());
+        if (dateOnly < minDateOnly) return true;
+      }
+      if (maxDateObj) {
+        const maxDateOnly = new Date(maxDateObj.getFullYear(), maxDateObj.getMonth(), maxDateObj.getDate());
+        const dateOnly = new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate());
+        if (dateOnly > maxDateOnly) return true;
+      }
       return false;
     };
 
@@ -85,7 +93,7 @@ const Calendar = ({ selectedDate, onDateSelect, minDate, maxDate }) => {
               <div key={index} className="p-1">
                 {day ? (
                   <button
-                    onClick={() => onDateSelect(day)}
+                    onClick={() => !isDateDisabled(day) && onDateSelect(day)}
                     disabled={isDateDisabled(day)}
                     className={`w-full p-2 text-sm rounded ${
                       isDateSelected(day)
