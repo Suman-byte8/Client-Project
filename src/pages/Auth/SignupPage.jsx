@@ -54,7 +54,8 @@ const SignupPage = () => {
     <div
       className="flex min-h-screen items-center justify-center px-4 py-8"
       style={{
-        backgroundImage: `url(${bg})`,
+          backgroundImage: `url('https://i.pinimg.com/1200x/28/26/ad/2826ad3fb9aaf5e4ca2cbd41b65dfc59.jpg')`,
+        // backgroundImage: `url(${bg})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",

@@ -4,7 +4,7 @@ const Details = ({ title, description }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const truncatedDescription =
-    description?.length > 100 ? description.slice(0, 100) + "..." : description;
+    description?.length > 100 ? description.slice(0, 200) + "..." : description;
 
   const shouldShowToggle = description?.length > 100;
 
@@ -14,7 +14,7 @@ const Details = ({ title, description }) => {
       w-[90vw] max-w-[450px]
       sm:max-w-[500px] 
       md:w-[500px] md:max-w-[500px] 
-      lg:w-[600px] lg:max-w-[600px]
+      lg:w-[500px] lg:max-w-[600px]
       min-h-[150px] sm:min-h-[120px] 
       bg-white p-4 sm:p-5 md:p-6 
       text-center flex flex-col items-center justify-center 

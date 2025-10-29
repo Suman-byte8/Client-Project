@@ -41,7 +41,6 @@ export default function MeetingWeddingForm({ onSubmit }) {
     "Reception",
     "Birthday",
     "Office Meeting",
-    "Others",
   ];
 
   // Add this function to update end date when start date changes
