@@ -148,9 +148,9 @@ const WeddingPage = () => {
             décor, at Silver Arcade Premier — Malda’s ultimate wedding
             destination.
           </p>
-          <button className="px-8 py-3 bg-white text-black rounded-full hover:bg-gray-200 transition">
+          {/* <button className="px-8 py-3 bg-white text-black rounded-full hover:bg-gray-200 transition">
             Know More
-          </button>
+          </button> */}
         </div>
       </section>
     </div>

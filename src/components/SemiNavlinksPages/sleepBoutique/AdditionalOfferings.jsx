@@ -14,9 +14,9 @@ const AdditionalOfferings = () => {
         <p className="text-gray-600 text-sm mb-4">
           Rejuvenate your senses with our premium spa therapies and wellness programs, designed to balance mind, body, and soul.
         </p>
-        <button className="text-sm border border-gray-400 rounded-full px-4 py-1 hover:bg-gray-100 transition">
+        {/* <button className="text-sm border border-gray-400 rounded-full px-4 py-1 hover:bg-gray-100 transition">
           KNOW MORE
-        </button>
+        </button> */}
       </div>
 
       {/* Dining */}

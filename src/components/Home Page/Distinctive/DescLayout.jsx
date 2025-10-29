@@ -28,9 +28,9 @@ const DescLayout = ({ desc }) => {
         <p className="text-center w-full p-2 text-sm leading-6.5 text-gray-500">
           {desc.desc}
         </p>
-        <button className="p-3 border-2 border-gray-300 rounded-full mt-2 px-12">
+        {/* <button className="p-3 border-2 border-gray-300 rounded-full mt-2 px-12">
           Know More
-        </button>
+        </button> */}
       </div>
       <div className="w-full md:w-[55%] h-[65vh]">
         <div className="_img flex items-center justify-center h-full">

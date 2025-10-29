@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { toast } from "react-hot-toast";
+import { FaSpinner } from "react-icons/fa"; // Assuming react-icons is installed
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -37,7 +38,7 @@ const Contact = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/contact`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/contact/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -111,9 +112,16 @@ const Contact = () => {
           <button
             type="submit"
             disabled={loading}
-            className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
-            {loading ? 'Sending...' : 'Send Message'}
+            {loading ? (
+              <>
+                <FaSpinner className="animate-spin" />
+                Sending...
+              </>
+            ) : (
+              'Send Message'
+            )}
           </button>
         </form>
 
@@ -121,7 +129,7 @@ const Contact = () => {
         <div className="flex-1">
           <iframe
             title="Google Map"
-            src="https://maps.google.com/maps?q=25.004537314864635,88.13319698281303&hl=en&z=14&output=embed"
+            src="https://maps.google.com/maps?q=25.00417870568155,88.13334421253452&hl=en&z=14&output=embed"
             width="100%"
             height="350"
             style={{ border: 0, borderRadius: "12px" }}
