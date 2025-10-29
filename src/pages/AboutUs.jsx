@@ -14,7 +14,8 @@ export default function AboutUs() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/content/about");
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/content/about`);
+
         const result = await response.json();
         setData(result);
       } catch (error) {
