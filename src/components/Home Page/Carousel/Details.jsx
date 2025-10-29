@@ -1,15 +1,39 @@
-import React from 'react'
+import React, { useState } from "react";
 
 const Details = ({ title, description }) => {
-  return (
-    <div className="_subDetails min-w-[300px] max-w-[380px] sm:min-w-[250px] sm:max-w-[300px] min-h-[150px] sm:min-h-[180px] bg-white p-3 sm:p-4 text-center flex flex-col items-center justify-center rounded-lg shadow-lg gap-2 sm:gap-3 z-50">
-      <h2 className="text-lg sm:text-xl font-light">{title}</h2>
-      <p className="text-xs sm:text-sm text-gray-600">{description}</p>
-      {/* <button className='border-2 border-gray-300 rounded-full px-3 py-1 mt-2 text-xs sm:text-sm hover:bg-gray-50 transition-colors'>
-        Know More
-      </button> */}
-    </div>
-  )
-}
+  const [isExpanded, setIsExpanded] = useState(false);
 
-export default Details
+  const truncatedDescription =
+    description?.length > 100 ? description.slice(0, 100) + "..." : description;
+
+  const shouldShowToggle = description?.length > 100;
+
+  return (
+    <div
+      className="_subDetails 
+      w-[90vw] max-w-[450px]
+      sm:max-w-[500px] 
+      md:w-[500px] md:max-w-[500px] 
+      lg:w-[600px] lg:max-w-[600px]
+      min-h-[150px] sm:min-h-[120px] 
+      bg-white p-4 sm:p-5 md:p-6 
+      text-center flex flex-col items-center justify-center 
+      rounded-lg shadow-lg gap-2 sm:gap-3 z-50"
+    >
+      <h2 className="text-base sm:text-lg md:text-xl font-light">{title}</h2>
+      <p className="text-xs sm:text-sm text-gray-600">
+        {isExpanded ? description : truncatedDescription}
+      </p>
+      {shouldShowToggle && (
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="text-xs sm:text-sm text-blue-500 hover:text-blue-700 transition-colors"
+        >
+          {isExpanded ? "See less" : "See more"}
+        </button>
+      )}
+    </div>
+  );
+};
+
+export default Details;

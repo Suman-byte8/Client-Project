@@ -22,7 +22,6 @@ const Slider = ({ slides, showDetails, classes }) => {
     setActiveIndex(swiper.realIndex);
   };
 
-  // Show loading state if no slides
   if (slides.length === 0) {
     return (
       <div className={`relative w-full h-full ${classes} bg-gray-100 flex items-center justify-center`}>
@@ -48,7 +47,6 @@ const Slider = ({ slides, showDetails, classes }) => {
         }}
         onSlideChange={handleSlideChange}
         onInit={(swiper) => {
-          // Ensure activeIndex is set correctly on initialization
           setActiveIndex(swiper.realIndex);
         }}
         className="h-full w-full"
@@ -68,10 +66,12 @@ const Slider = ({ slides, showDetails, classes }) => {
         ))}
       </Swiper>
 
-      {showDetails && slides.length > 0 && slides[activeIndex] && (
-        <div className="absolute top-[50vh] 
-        
-        left-1/2 transform -translate-x-1/2 md:left-20 md:top-1/2 md:-translate-y-1/2 md:translate-x-0 z-50">
+      {showDetails && slides.length > 0 && slides[activeIndex]?.details && (
+        <div className="absolute 
+          bottom-0 translate-y-1/2
+          left-1/2 -translate-x-1/2 
+          md:bottom-auto md:top-1/2 md:left-20 md:-translate-y-1/2 md:translate-x-0 
+          z-50">
           <Details
             title={slides[activeIndex].details.title}
             description={slides[activeIndex].details.description}

@@ -33,36 +33,50 @@ const Distinctive = () => {
     getDistinctives();
   }, [getToken]);
 
-  if (loading) return (
-    <div className="w-full flex items-center justify-center py-12">
-      <Loader text="Loading distinctive features" />
-    </div>
-  );
-  if (error) return (
-    <div className="w-full flex items-center justify-center py-12 text-sm text-red-600">
-      Unable to load distinctive features
-    </div>
-  );
-  if (!distinctives.length) return (
-    <div className="w-full flex items-center justify-center py-12 text-sm text-gray-500">
-      No distinctive features found
-    </div>
-  );
+  if (loading)
+    return (
+      <div className="w-full flex items-center justify-center py-12">
+        <Loader text="Loading distinctive features" />
+      </div>
+    );
+  if (error)
+    return (
+      <div className="w-full flex items-center justify-center py-12 text-sm text-red-600">
+        Unable to load distinctive features
+      </div>
+    );
+  if (!distinctives.length)
+    return (
+      <div className="w-full flex items-center justify-center py-12 text-sm text-gray-500">
+        No distinctive features found
+      </div>
+    );
 
   // Prepare the props for DescLayout from the selected feature data
-  const descLayoutProps = selectedLink ? {
-    name: selectedLink.title,
-    desc: selectedLink.description,
-    img: selectedLink.images,
-  } : null;
+  const descLayoutProps = selectedLink
+    ? {
+        name: selectedLink.title,
+        desc: selectedLink.description,
+        img: selectedLink.images,
+      }
+    : null;
 
   return (
     <section className="w-full py-12 mt-18 md:mt-2 flex flex-col items-center gap-8 px-4 sm:px-6 lg:px-8 relative z-10">
       <FullLogo isFlex />
 
       <div className="w-full sm:w-[90%] md:w-[70%] text-center">
-        <p className="text-sm sm:text-base lg:text-lg text-gray-600 leading-relaxed">
-        Silver Arcade Premier stands as Malda’s most refined destination for discerning travelers. A perfect blend of modern design, timeless hospitality, and world-class amenities, the hotel offers an exceptional stay for business executives, leisure seekers, and families looking for comfort, luxury, and memorable experiences.
+        <p className="text-xs sm:text-base lg:text-lg text-gray-600 leading-relaxed text-pretty">
+          Silver Arcade Premier stands as Malda’s most refined destination for
+          discerning travelers. Blending contemporary design with timeless
+          Bengali warmth, the hotel redefines comfort and sophistication in
+          North Bengal’s hospitality scene.
+          <br />
+          Whether you’re a business executive seeking efficiency, a family
+          looking for a serene retreat, or a traveler exploring the cultural
+          charm of Malda, Silver Arcade Premier welcomes you with world-class
+          amenities, bespoke services, and a hospitality experience that feels
+          personal, graceful, and memorable.
         </p>
       </div>
 
